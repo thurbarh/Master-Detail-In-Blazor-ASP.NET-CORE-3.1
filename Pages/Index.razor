@@ -1,0 +1,86 @@
+﻿@page "/"
+
+@inject HttpClient Http
+
+<h1>Customer Orders</h1>
+<div>
+    <a class="btn btn-primary" href="create"><span class="oi oi-plus"  aria-hidden="true"></span> Create</a>
+    <p></p>
+</div>
+@if (orders == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Order No.</th>
+                <th>Customer</th>
+                <th>Payment Method</th>
+                <th>Order Date</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in orders)
+            {
+                <tr>
+                    <td>
+                       <span class="oi @order.DetailIcon" aria-hidden="true" @onclick="@(()=>ChangeDetailState(order))"></span>&nbsp;
+                       @order.OrderNumber
+                    </td>
+                    <td>@order.CustomerName</td>
+                    <td>@order.PaymentMethod</td>
+                    <td>@order.DateCreated.ToString("ddd, MMM dd yyyy")</td>
+                    <td>@order.Total.ToString("#,##0.00;(#,##0.00)")</td>
+                </tr>
+                if (order.OrderDetails.Count() > 0)
+                {
+                    <tr>
+                        <td colspan="5">
+                            @if (order.ShowDetail)
+                            {
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var detail in order.OrderDetails)
+                                            {
+                                                <tr>
+                                                    <td>@detail.Item</td>
+                                                    <td>@detail.Quantity</td>
+                                                    <td>@detail.Price</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<OrderViewModel> orders;
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await Http.GetJsonAsync<List<OrderViewModel>>("orders");
+    }
+    void ChangeDetailState(OrderViewModel order)
+    {
+        order.ShowDetail = !order.ShowDetail;
+        if (order.ShowDetail) order.DetailIcon = "oi-caret-bottom";
+        else order.DetailIcon = "oi-caret-right";
+
+    }
+}

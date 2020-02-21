@@ -1,0 +1,93 @@
+﻿<div class="dialog-title">
+    <h3>Detail</h3>
+</div>
+<div class="dialog-body">
+    <form class="form-horizontal">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="Item">Item</label>
+                <select class="form-control col-md-4" @bind="@SelectedValue"  name="Item">
+                    @foreach (var item in PriceList)
+                    {
+                        <option value="@item.Key">@item.Key</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="text" name="price" class="form-control col-md-4" @bind="@orderDetail.Price" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" name="quantity" @bind="@orderDetail.Quantity" class="form-control col-md-4" min="0" max="1000" />
+            </div>
+            <div class="form-group">
+                <input type="button" value="@BtnText" class="btn btn-primary" @onclick="@AddToList" />
+                <input type="button" value="close" class="btn btn-danger" @onclick="OnCancel" />
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@code {
+    Dictionary<string, decimal> PriceList = new Dictionary<string, decimal>()
+    {
+        {"",0.00m },
+        {"Apple Watch",130.00m },
+        {"Google Pixel",290.20m },
+        {"IphoneX Max",783.10m },
+        {"Samsung S10",310.00m },
+        {"Oppo Reno 8",400.30m },
+    };
+    public string SelectedValue
+    {
+        get { return orderDetail.Item; }
+        set
+        {
+            orderDetail.Item = value;
+            SelectChange();
+        }
+    }
+    [Parameter] public OrderDetail orderDetail { get; set; }
+    [Parameter] public List<OrderDetail> orderDetails { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public string BtnText { get; set; }
+    private void AddToList()
+    {
+        if (string.IsNullOrEmpty(orderDetail.Item) || orderDetail.Price <= 0 || orderDetail.Quantity <= 0) return;
+        if (orderDetail.OrderDetailId > 0)
+        {
+            var data = orderDetails.FirstOrDefault(m => m.OrderDetailId == orderDetail.OrderDetailId);
+            data.Price = orderDetail.Price;
+            data.Quantity = orderDetail.Quantity;
+            data.Item = orderDetail.Item;
+        }
+        else
+        {
+            var data = orderDetails.FirstOrDefault(m => m.Item == orderDetail.Item);
+            if (data != null)
+            {
+                data.Quantity += orderDetail.Quantity;
+            }else
+                orderDetails.Add(new OrderDetail()
+                {
+                    Item = orderDetail.Item,
+                    Price = orderDetail.Price,
+                    Quantity = orderDetail.Quantity,
+                    OrderDetailId = (orderDetails.Count > 0 ? orderDetails.Select(m => m.OrderDetailId).Max() : 0) + 1
+                });
+        }
+        Reset();
+        StateHasChanged();
+    }
+    private void Reset()
+    {
+        orderDetail = new OrderDetail();
+    }
+
+    private void SelectChange()
+    {
+        orderDetail.Price = PriceList[orderDetail.Item];
+    }
+}

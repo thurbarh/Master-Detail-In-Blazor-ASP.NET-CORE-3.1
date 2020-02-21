@@ -1,0 +1,100 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD\\MasterDetailCRUD.csproj": {}
+  },
+  "projects": {
+    "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD.Models\\MasterDetailCRUD.Models.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD.Models\\MasterDetailCRUD.Models.csproj",
+        "projectName": "MasterDetailCRUD.Models",
+        "projectPath": "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD.Models\\MasterDetailCRUD.Models.csproj"
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
+    "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD\\MasterDetailCRUD.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD\\MasterDetailCRUD.csproj",
+        "projectName": "MasterDetailCRUD",
+        "projectPath": "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD\\MasterDetailCRUD.csproj",
+        "packagesPath": "C:\\Users\\atoba\\.nuget\\packages\\",
+        "outputPath": "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\atoba\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "projectReferences": {
+              "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD.Models\\MasterDetailCRUD.Models.csproj": {
+                "projectPath": "C:\\Solutions\\Blazor\\Projects\\MasterDetails\\MasterDetailCRUD.Models\\MasterDetailCRUD.Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Blazor": {
+              "target": "Package",
+              "version": "[3.1.0-preview4.19579.2, )"
+            },
+            "Microsoft.AspNetCore.Blazor.Build": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.0-preview4.19579.2, )"
+            },
+            "Microsoft.AspNetCore.Blazor.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.0-preview4.19579.2, )"
+            },
+            "Microsoft.AspNetCore.Blazor.HttpClient": {
+              "target": "Package",
+              "version": "[3.1.0-preview4.19579.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,125 @@
+﻿@page "/create"
+@inject HttpClient httpclient
+@inject NavigationManager navmanager
+    <div class="row">
+        <h3>Create</h3>
+    </div>
+    <div class="row">
+        <button class="btn btn-success" @onclick="SubmitData">Save</button>&nbsp;|&nbsp;
+        <button class="btn btn-warning" @onclick="@(()=>navmanager.NavigateTo(""))">Close</button>
+        <p>&nbsp;</p>
+    </div>
+<div class="row">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="orderNumber">Order Number</label>
+            <input type="text" name="orderNumber" @bind="@order.OrderNumber" class="form-control"  disabled="disabled"/>
+        </div>
+        <div class="form-group">
+            <label for="customer">Customer</label>
+            <input type="text" name="customer" @bind="@order.CustomerName" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="paymentmethod">Payment Method</label>
+            <select  name="paymentmethod" @bind="@order.PaymentMethod" class="form-control">
+                <option value=""></option>
+                <option value="CASH">Cash</option>
+                <option value="NIP">NIP</option>
+                <option value="ETF">ETF</option>
+                <option value="DirectDebit">Direct Debit</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="total">Total</label>
+            <input type="text" name="total" value="@OrderTotal" class="form-control" disabled="disabled" />
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-md-5 ml-0">
+        <div class="offset-11 mb-2">
+            <button class="btn btn-primary btn-sm" style="float:right" @onclick="DisplayDetail"><span class="oi oi-plus" aria-hidden="true"></span> Add</button>
+        <p>&nbsp;</p>
+        </div>
+        <div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var order_Detail in orderDetails)
+                    {
+                        <tr>
+                            <td>@order_Detail.Item</td>
+                            <td>@order_Detail.Price</td>
+                            <td>@order_Detail.Quantity</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" @onclick="@(()=>EditItem(order_Detail))">edit</button>|
+                                <button class="btn btn-sm btn-danger" @onclick="@(() => RemoveItem(order_Detail))">delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<DialogTemplate Show="@ShowDialog">
+    <DetailDialog  BtnText="@BtnText" OnCancel="CloseDetail" orderDetails="@orderDetails" orderDetail="@orderDetail">
+    </DetailDialog>
+</DialogTemplate>
+@code {
+    private bool ShowDialog;
+    private Order order = new Order();
+    private OrderDetail orderDetail=new OrderDetail();
+    private List<OrderDetail> orderDetails = new List<OrderDetail>();
+    private decimal OrderTotal { get => orderDetails.Sum(m => m.TotalPerItem); }
+    public string BtnText { get; set; } = "add";
+    protected override Task OnInitializedAsync()
+    {
+        var ran = new Random();
+        order.OrderNumber = $"ITL{ran.Next(9999, 99999)}";
+        return base.OnInitializedAsync();
+    }
+    private void DisplayDetail()
+    {
+        orderDetail=new OrderDetail();
+        BtnText = "add";
+        ShowDialog = true;
+        StateHasChanged();
+    }
+    private void CloseDetail()
+    {
+        ShowDialog = false;
+    }
+    private void RemoveItem(OrderDetail detail)
+    {
+        orderDetails.Remove(detail);
+    }
+    private void EditItem(OrderDetail detail)
+    {
+        BtnText = "update";
+        orderDetail = detail;
+        ShowDialog = true;
+    }
+    private async Task SubmitData()
+    {
+        if (string.IsNullOrEmpty(order.CustomerName) ||
+            string.IsNullOrEmpty(order.PaymentMethod) ||
+            orderDetails.Count() <= 0)
+            return;
+        order.Total = OrderTotal;
+        order.OrderDetails = orderDetails;
+        var res = await httpclient.PostJsonAsync<int>("Orders", order);
+        if (res > 0)
+            navmanager.NavigateTo("");
+    }
+}
