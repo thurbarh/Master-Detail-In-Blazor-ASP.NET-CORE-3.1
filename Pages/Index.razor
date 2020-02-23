@@ -28,7 +28,7 @@ else
             {
                 <tr>
                     <td>
-                       <span class="oi @order.DetailIcon" aria-hidden="true" @onclick="@(()=>ChangeDetailState(order))"></span>&nbsp;
+                       <span class="oi @order.DetailIcon" aria-hidden="true" @onclick="@(() => ChangeDetailState(order))"></span>&nbsp;
                        @order.OrderNumber
                     </td>
                     <td>@order.CustomerName</td>

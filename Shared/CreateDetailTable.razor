@@ -1,0 +1,44 @@
+﻿@inject IJSRuntime JS
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>#</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var order_Detail in orderDetails)
+        {
+            <tr>
+                <td>@order_Detail.Item</td>
+                <td>@order_Detail.Price</td>
+                <td>@order_Detail.Quantity</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" @onclick="@((e)=>EditItem(e,order_Detail))">edit</button>|
+                    <button class="btn btn-sm btn-danger" @onclick="@(() => RemoveItem(order_Detail))">delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    [Parameter] public List<OrderDetail> orderDetails { get; set; }
+    [Parameter] public OrderDetail orderDetail { get; set; }
+    [Parameter] public EventCallback _EditItem { get; set; }
+    private async void RemoveItem(OrderDetail detail)
+    {
+        if (await JS.Confirm($"Remove {detail.Item} from your order?"))
+        {
+            orderDetails.Remove(detail);
+            await JS.Alert($"You Removed {detail.Item} from your order");
+        }
+    }
+    private void EditItem(MouseEventArgs e, OrderDetail detail)
+    {
+        orderDetail = detail;
+        _EditItem.InvokeAsync(e);
+    }
+}

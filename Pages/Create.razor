@@ -9,71 +9,27 @@
         <button class="btn btn-warning" @onclick="@(()=>navmanager.NavigateTo(""))">Close</button>
         <p>&nbsp;</p>
     </div>
-<div class="row">
-    <form class="form-horizontal">
-        <div class="form-group">
-            <label for="orderNumber">Order Number</label>
-            <input type="text" name="orderNumber" @bind="@order.OrderNumber" class="form-control"  disabled="disabled"/>
-        </div>
-        <div class="form-group">
-            <label for="customer">Customer</label>
-            <input type="text" name="customer" @bind="@order.CustomerName" class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label for="paymentmethod">Payment Method</label>
-            <select  name="paymentmethod" @bind="@order.PaymentMethod" class="form-control">
-                <option value=""></option>
-                <option value="CASH">Cash</option>
-                <option value="NIP">NIP</option>
-                <option value="ETF">ETF</option>
-                <option value="DirectDebit">Direct Debit</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="total">Total</label>
-            <input type="text" name="total" value="@OrderTotal" class="form-control" disabled="disabled" />
-        </div>
-    </form>
-</div>
+    <CreateForm order="@order" OrderTotal="@OrderTotal"></CreateForm>
 
 <div class="row">
     <div class="col-md-5 ml-0">
-        <div class="offset-11 mb-2">
-            <button class="btn btn-primary btn-sm" style="float:right" @onclick="DisplayDetail"><span class="oi oi-plus" aria-hidden="true"></span> Add</button>
-        <p>&nbsp;</p>
+        <div class="offset-8 mb-2">
+            <button class="btn btn-primary" style="float:right" @onclick="DisplayDetail"><span class="oi oi-plus" aria-hidden="true"></span> Add</button>
+        <p></p>
         </div>
         <div>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>#</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (var order_Detail in orderDetails)
-                    {
-                        <tr>
-                            <td>@order_Detail.Item</td>
-                            <td>@order_Detail.Price</td>
-                            <td>@order_Detail.Quantity</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" @onclick="@(()=>EditItem(order_Detail))">edit</button>|
-                                <button class="btn btn-sm btn-danger" @onclick="@(() => RemoveItem(order_Detail))">delete</button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
+            <CreateDetailTable orderDetails="@orderDetails" 
+                               orderDetail="@orderDetail" 
+                               _EditItem="@EditItem">
+            </CreateDetailTable>
         </div>
     </div>
 </div>
 <DialogTemplate Show="@ShowDialog">
-    <DetailDialog  BtnText="@BtnText" OnCancel="CloseDetail" orderDetails="@orderDetails" orderDetail="@orderDetail">
+    <DetailDialog  BtnText="@BtnText" 
+                  OnCancel="CloseDetail" 
+                  orderDetails="@orderDetails" 
+                  orderDetail="@orderDetail">
     </DetailDialog>
 </DialogTemplate>
 @code {
@@ -100,14 +56,9 @@
     {
         ShowDialog = false;
     }
-    private void RemoveItem(OrderDetail detail)
-    {
-        orderDetails.Remove(detail);
-    }
-    private void EditItem(OrderDetail detail)
+    private void EditItem()
     {
         BtnText = "update";
-        orderDetail = detail;
         ShowDialog = true;
     }
     private async Task SubmitData()

@@ -1,4 +1,5 @@
-﻿<div class="dialog-title">
+﻿@inject IJSRuntime JS
+<div class="dialog-title">
     <h3>Detail</h3>
 </div>
 <div class="dialog-body">
@@ -53,8 +54,9 @@
     [Parameter] public List<OrderDetail> orderDetails { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string BtnText { get; set; }
-    private void AddToList()
+    private async void AddToList()
     {
+        string mesage = string.Empty;
         if (string.IsNullOrEmpty(orderDetail.Item) || orderDetail.Price <= 0 || orderDetail.Quantity <= 0) return;
         if (orderDetail.OrderDetailId > 0)
         {
@@ -62,6 +64,7 @@
             data.Price = orderDetail.Price;
             data.Quantity = orderDetail.Quantity;
             data.Item = orderDetail.Item;
+            mesage=$"You updated {orderDetail.Item}";
         }
         else
         {
@@ -69,7 +72,10 @@
             if (data != null)
             {
                 data.Quantity += orderDetail.Quantity;
-            }else
+                mesage=$"You updated {orderDetail.Item}";
+            }
+            else
+            {
                 orderDetails.Add(new OrderDetail()
                 {
                     Item = orderDetail.Item,
@@ -77,9 +83,12 @@
                     Quantity = orderDetail.Quantity,
                     OrderDetailId = (orderDetails.Count > 0 ? orderDetails.Select(m => m.OrderDetailId).Max() : 0) + 1
                 });
+              mesage=$"You added {orderDetail.Item} to your order";
+            }
         }
         Reset();
         StateHasChanged();
+        await JS.Alert(mesage);
     }
     private void Reset()
     {

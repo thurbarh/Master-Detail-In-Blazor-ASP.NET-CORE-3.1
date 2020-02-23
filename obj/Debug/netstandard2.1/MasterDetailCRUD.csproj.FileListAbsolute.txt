@@ -94,3 +94,7 @@ C:\Solutions\Blazor\Projects\MasterDetails\MasterDetailCRUD\obj\Debug\netstandar
 C:\Solutions\Blazor\Projects\MasterDetails\MasterDetailCRUD\obj\Debug\netstandard2.1\Razor\Shared\DetailDialog.razor.g.cs
 C:\Solutions\Blazor\Projects\MasterDetails\MasterDetailCRUD\obj\Debug\netstandard2.1\RazorDeclaration\Shared\DialogTemplate.razor.g.cs
 C:\Solutions\Blazor\Projects\MasterDetails\MasterDetailCRUD\obj\Debug\netstandard2.1\Razor\Shared\DialogTemplate.razor.g.cs
+C:\Solutions\Blazor\Projects\MasterDetails\MasterDetailCRUD\obj\Debug\netstandard2.1\RazorDeclaration\Shared\CreateDetailTable.razor.g.cs
+C:\Solutions\Blazor\Projects\MasterDetails\MasterDetailCRUD\obj\Debug\netstandard2.1\Razor\Shared\CreateDetailTable.razor.g.cs
+C:\Solutions\Blazor\Projects\MasterDetails\MasterDetailCRUD\obj\Debug\netstandard2.1\RazorDeclaration\Shared\CreateForm.razor.g.cs
+C:\Solutions\Blazor\Projects\MasterDetails\MasterDetailCRUD\obj\Debug\netstandard2.1\Razor\Shared\CreateForm.razor.g.cs
