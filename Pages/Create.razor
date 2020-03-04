@@ -18,10 +18,7 @@
         <p></p>
         </div>
         <div>
-            <CreateDetailTable orderDetails="@orderDetails" 
-                               orderDetail="@orderDetail" 
-                               _EditItem="@EditItem">
-            </CreateDetailTable>
+            <CreateDetailTable orderDetails="@orderDetails" _EditItem="@EditItem"> </CreateDetailTable>
         </div>
     </div>
 </div>
@@ -56,10 +53,11 @@
     {
         ShowDialog = false;
     }
-    private void EditItem()
+    private void EditItem(OrderDetail detail)
     {
         BtnText = "update";
         ShowDialog = true;
+        orderDetail = detail;
     }
     private async Task SubmitData()
     {

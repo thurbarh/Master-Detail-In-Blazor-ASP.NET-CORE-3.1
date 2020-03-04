@@ -9,7 +9,6 @@
         </tr>
     </thead>
     <tbody>
-
         @foreach (var order_Detail in orderDetails)
         {
             <tr>
@@ -17,7 +16,7 @@
                 <td>@order_Detail.Price</td>
                 <td>@order_Detail.Quantity</td>
                 <td>
-                    <button class="btn btn-primary btn-sm" @onclick="@((e)=>EditItem(e,order_Detail))">edit</button>|
+                    <button class="btn btn-primary btn-sm" @onclick="@(()=>EditItem(order_Detail))">edit</button>|
                     <button class="btn btn-sm btn-danger" @onclick="@(() => RemoveItem(order_Detail))">delete</button>
                 </td>
             </tr>
@@ -26,8 +25,7 @@
 </table>
 @code {
     [Parameter] public List<OrderDetail> orderDetails { get; set; }
-    [Parameter] public OrderDetail orderDetail { get; set; }
-    [Parameter] public EventCallback _EditItem { get; set; }
+    [Parameter] public EventCallback<OrderDetail> _EditItem { get; set; }
     private async void RemoveItem(OrderDetail detail)
     {
         if (await JS.Confirm($"Remove {detail.Item} from your order?"))
@@ -36,9 +34,8 @@
             await JS.Alert($"You Removed {detail.Item} from your order");
         }
     }
-    private void EditItem(MouseEventArgs e, OrderDetail detail)
+    private void EditItem(OrderDetail detail)
     {
-        orderDetail = detail;
-        _EditItem.InvokeAsync(e);
+        _EditItem.InvokeAsync(detail);
     }
 }
